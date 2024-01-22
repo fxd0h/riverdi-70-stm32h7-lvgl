@@ -84,7 +84,7 @@ void MX_FREERTOS_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-
+#include "quadspi.h"
 /* USER CODE END 0 */
 
 /**
@@ -188,6 +188,22 @@ Error_Handler();
   MX_FATFS_Init();
   /* USER CODE BEGIN 2 */
 
+
+  if (BSP_SDRAM_SingleTest() != 0)
+  {
+            Error_Handler();
+  }
+
+
+  if (CSP_QUADSPI_Init() == HAL_OK) {
+          CSP_QSPI_EnableMemoryMappedMode();
+  }
+
+
+
+
+
+
   /* initialize LVGL framework */
   lv_init();
 
@@ -196,8 +212,9 @@ Error_Handler();
   lvgl_touchscreen_init();
 
   /* lvgl demo */
-  lv_demo_widgets();
+  //lv_demo_widgets();
   //lv_demo_music();
+  lv_demo_benchmark();
 
   /* pwm */
   if (HAL_TIM_PWM_Start(&htim15, TIM_CHANNEL_1) != HAL_OK)

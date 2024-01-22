@@ -396,7 +396,7 @@ int32_t
 BSP_SDRAM_SingleTest( void )
 {
   volatile uint32_t i;
-  volatile uint32_t w=0;
+  volatile uint32_t w=1;
 
   for ( i = 0; i < SDRAM_DEVICE_SIZE/4; ++i )
   {

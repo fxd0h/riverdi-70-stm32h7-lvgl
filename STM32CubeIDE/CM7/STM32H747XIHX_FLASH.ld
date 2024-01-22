@@ -50,6 +50,9 @@ MEMORY
   RAM_D2 (xrw)   : ORIGIN = 0x30000000, LENGTH = 288K
   RAM_D3 (xrw)   : ORIGIN = 0x38000000, LENGTH = 64K
   ITCMRAM (xrw)  : ORIGIN = 0x00000000, LENGTH = 64K
+  QUADSPI (r)	 : ORIGIN = 0x90000000,	LENGTH = 64M
+  SDRAM   (xrw)  : ORIGIN = 0xD0000000,  LENGTH = 4M
+  SDRAM2  (xrw)  : ORIGIN = 0xD0400000,  LENGTH = 4M
 }
 
 /* Sections */
@@ -184,5 +187,30 @@ SECTIONS
     libgcc.a ( * )
   }
 
-  .ARM.attributes 0 : { *(.ARM.attributes) }
+  
+.ARM.attributes 0 : { *(.ARM.attributes) }
+
+TouchGFX_Framebuffer (NOLOAD) :
+ 	{
+		*(TouchGFX_Framebuffer TouchGFX_Framebuffer.*)
+        . = ALIGN(0x4);
+	} >SDRAM
+
+BufferSection  (NOLOAD):
+  {
+
+    *(Video_RGB_Buffer Video_RGB_Buffer.*)
+    . = ALIGN(0x4);
+  } >SDRAM2
+  BufferSection2 (NOLOAD):{
+  	. = ALIGN(0x4);
+  }>RAM_D2
+
+    ExtFlashSection :
+	{
+		*(ExtFlashSection ExtFlashSection.*)
+		*(.gnu.linkonce.r.*)
+        . = ALIGN(0x4);
+	} >QUADSPI
+	
 }
