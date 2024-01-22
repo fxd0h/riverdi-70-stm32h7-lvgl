@@ -188,29 +188,29 @@ SECTIONS
   }
 
   
-.ARM.attributes 0 : { *(.ARM.attributes) }
+  .ARM.attributes 0 : { *(.ARM.attributes) }
 
-TouchGFX_Framebuffer (NOLOAD) :
- 	{
-		*(TouchGFX_Framebuffer TouchGFX_Framebuffer.*)
-        . = ALIGN(0x4);
-	} >SDRAM
-
-BufferSection  (NOLOAD):
+  TouchGFX_Framebuffer (NOLOAD) :
   {
+	*(TouchGFX_Framebuffer TouchGFX_Framebuffer.*)
+	. = ALIGN(0x4);
+  } >SDRAM
 
+  BufferSection  (NOLOAD):
+  {
     *(Video_RGB_Buffer Video_RGB_Buffer.*)
     . = ALIGN(0x4);
   } >SDRAM2
-  BufferSection2 (NOLOAD):{
+  
+  LVGLBufferSection (NOLOAD):{
   	. = ALIGN(0x4);
   }>RAM_D2
-
-    ExtFlashSection :
-	{
-		*(ExtFlashSection ExtFlashSection.*)
-		*(.gnu.linkonce.r.*)
-        . = ALIGN(0x4);
-	} >QUADSPI
+  
+  ExtFlashSection :
+  {
+	*(ExtFlashSection ExtFlashSection.*)
+	*(.gnu.linkonce.r.*)
+    . = ALIGN(0x4);
+  } >QUADSPI
 	
 }

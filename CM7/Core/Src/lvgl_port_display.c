@@ -22,7 +22,7 @@ static lv_disp_drv_t disp_drv;
 static lv_disp_draw_buf_t disp_buf;
 //static __attribute__((aligned(32))) lv_color_t buf_1[MY_DISP_HOR_RES * 64];
 //static __attribute__((aligned(32)),(section ("TouchGFX_Framebuffer"))) lv_color_t buf_1[MY_DISP_HOR_RES * 64];
-static  __attribute__((aligned(32))) __attribute__( (section ("BufferSection2")) ) lv_color_t buf_1[MY_DISP_HOR_RES * 64];//__attribute__( (section ("BufferSection")) )//__attribute__((aligned(32)))
+static  __attribute__((aligned(32))) __attribute__( (section ("LVGLBufferSection")) ) lv_color_t buf_1[MY_DISP_HOR_RES * 64];//__attribute__( (section ("BufferSection")) )//__attribute__((aligned(32)))
 
 /**********************
  *   GLOBAL FUNCTIONS
@@ -85,6 +85,41 @@ disp_flush (lv_disp_drv_t   *drv,
   DMA2D->IFCR = 0x3FU;
   DMA2D->CR |= DMA2D_CR_TCIE;
   DMA2D->CR |= DMA2D_CR_START;
+/*
+  volatile int x1, x2, y1, y2;
+
+     x1 = area->x1;
+     x2 = area->x2;
+     y1 = area->y1;
+     y2 = area->y2;
+
+
+
+     volatile int32_t act_x1 = x1 < 0 ? 0 : x1;
+     volatile int32_t act_y1 = y1 < 0 ? 0 : y1;
+     volatile int32_t act_x2 = x2-1;// > width - 1 ? width - 1 : x2;
+     volatile int32_t act_y2 = y2 -1;//> height - 1 ? height - 1 : y2;
+
+     uint32_t x;
+     uint32_t y;
+     long int location = 0;
+
+
+     lv_color32_t *fbp32 = (lv_color32_t *)hltdc.LayerCfg[0].FBStartAdress;
+
+     for (y = act_y1; y <= act_y1+act_y2; y++)
+     {
+         for (x = act_x1; x <= act_x2; x++)
+         {
+             location = (x) + (y) * 1024;
+             fbp32[location]= *color_p;
+             color_p++;
+         }
+
+         color_p += x2 - act_x2;
+     }
+     lv_disp_flush_ready(&disp_drv);
+     */
 }
 
 static void
