@@ -340,7 +340,8 @@
 #define LV_ATTRIBUTE_LARGE_CONST  __attribute__( (section ("ExtFlashSection")) )
 
 /*Compiler prefix for a big array declaration in RAM*/
-#define LV_ATTRIBUTE_LARGE_RAM_ARRAY __attribute__( (section ("D3RAM")) ) __attribute__((aligned(32)))
+#define LV_ATTRIBUTE_LARGE_RAM_ARRAY
+//__attribute__( (section ("D3RAM")) ) __attribute__((aligned(32)))
 
 /*Place performance critical functions into a faster memory (e.g RAM)*/
 #define LV_ATTRIBUTE_FAST_MEM
