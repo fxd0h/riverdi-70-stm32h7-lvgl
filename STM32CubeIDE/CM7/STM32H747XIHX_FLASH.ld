@@ -206,6 +206,10 @@ SECTIONS
   	. = ALIGN(0x4);
   }>RAM_D2
   
+  D3RAM (NOLOAD):{
+  	. = ALIGN(0x4);
+  }>RAM_D3
+  
   ExtFlashSection :
   {
 	*(ExtFlashSection ExtFlashSection.*)

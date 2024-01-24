@@ -230,7 +230,7 @@
  *-----------*/
 
 /*Enable the log module*/
-#define LV_USE_LOG 0
+#define LV_USE_LOG 1
 #if LV_USE_LOG
 
     /*How important log should be added:
@@ -244,17 +244,17 @@
 
     /*1: Print the log with 'printf';
     *0: User need to register a callback with `lv_log_register_print_cb()`*/
-    #define LV_LOG_PRINTF 0
+    #define LV_LOG_PRINTF 1
 
     /*Enable/disable LV_LOG_TRACE in modules that produces a huge number of logs*/
     #define LV_LOG_TRACE_MEM        1
-    #define LV_LOG_TRACE_TIMER      1
-    #define LV_LOG_TRACE_INDEV      1
-    #define LV_LOG_TRACE_DISP_REFR  1
-    #define LV_LOG_TRACE_EVENT      1
-    #define LV_LOG_TRACE_OBJ_CREATE 1
-    #define LV_LOG_TRACE_LAYOUT     1
-    #define LV_LOG_TRACE_ANIM       1
+    #define LV_LOG_TRACE_TIMER      0
+    #define LV_LOG_TRACE_INDEV      0
+    #define LV_LOG_TRACE_DISP_REFR  0
+    #define LV_LOG_TRACE_EVENT      0
+    #define LV_LOG_TRACE_OBJ_CREATE 0
+    #define LV_LOG_TRACE_LAYOUT     0
+    #define LV_LOG_TRACE_ANIM       0
 
 #endif  /*LV_USE_LOG*/
 
@@ -337,10 +337,10 @@
 #define LV_ATTRIBUTE_MEM_ALIGN __attribute__((aligned(32)))
 
 /*Attribute to mark large constant arrays for example font's bitmaps*/
-#define LV_ATTRIBUTE_LARGE_CONST
+#define LV_ATTRIBUTE_LARGE_CONST  __attribute__( (section ("ExtFlashSection")) )
 
 /*Compiler prefix for a big array declaration in RAM*/
-#define LV_ATTRIBUTE_LARGE_RAM_ARRAY
+#define LV_ATTRIBUTE_LARGE_RAM_ARRAY __attribute__( (section ("D3RAM")) ) __attribute__((aligned(32)))
 
 /*Place performance critical functions into a faster memory (e.g RAM)*/
 #define LV_ATTRIBUTE_FAST_MEM
@@ -520,7 +520,7 @@
  *----------*/
 #define LV_USE_ANIMIMG    1
 
-#define LV_USE_CALENDAR   1
+#define LV_USE_CALENDAR   0
 #if LV_USE_CALENDAR
     #define LV_CALENDAR_WEEK_STARTS_MONDAY 0
     #if LV_CALENDAR_WEEK_STARTS_MONDAY
@@ -735,7 +735,7 @@
  ====================*/
 
 /*Show some widget. It might be required to increase `LV_MEM_SIZE` */
-#define LV_USE_DEMO_WIDGETS 1
+#define LV_USE_DEMO_WIDGETS 0
 #if LV_USE_DEMO_WIDGETS
 #define LV_DEMO_WIDGETS_SLIDESHOW 0
 #endif
@@ -754,7 +754,7 @@
 #define LV_USE_DEMO_STRESS 0
 
 /*Music player demo*/
-#define LV_USE_DEMO_MUSIC 1
+#define LV_USE_DEMO_MUSIC 0
 #if LV_USE_DEMO_MUSIC
     #define LV_DEMO_MUSIC_SQUARE    0
     #define LV_DEMO_MUSIC_LANDSCAPE 0

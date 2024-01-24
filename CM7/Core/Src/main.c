@@ -46,7 +46,7 @@
 #include "lvgl/demos/lv_demos.h"
 #include "lvgl_port_touch.h"
 #include "lvgl_port_display.h"
-
+#include <stdio.h>
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -85,6 +85,58 @@ void MX_FREERTOS_Init(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 #include "quadspi.h"
+
+
+void SWD_Init(void)
+{
+  *(__IO uint32_t*)(0x5C001004) |= 0x00700000; // DBGMCU_CR D3DBGCKEN D1DBGCKEN TRACECLKEN
+
+  //UNLOCK FUNNEL
+  *(__IO uint32_t*)(0x5C004FB0) = 0xC5ACCE55; // SWTF_LAR
+  *(__IO uint32_t*)(0x5C003FB0) = 0xC5ACCE55; // SWO_LAR
+
+  //SWO current output divisor register
+  //This divisor value (0x000000C7) corresponds to 400Mhz
+  //To change it, you can use the following rule
+  // value = (CPU Freq/sw speed )-1
+   *(__IO uint32_t*)(0x5C003010) = ((SystemCoreClock / 2000000) - 1); // SWO_CODR
+
+  //SWO selected pin protocol register
+   *(__IO uint32_t*)(0x5C0030F0) = 0x00000002; // SWO_SPPR
+
+  //Enable ITM input of SWO trace funnel
+   *(__IO uint32_t*)(0x5C004000) |= 0x00000001; // SWFT_CTRL
+
+  //RCC_AHB4ENR enable GPIOB clock
+   *(__IO uint32_t*)(0x580244E0) |= 0x00000002;
+
+  // Configure GPIOB pin 3 as AF
+   *(__IO uint32_t*)(0x58020400) = (*(__IO uint32_t*)(0x58020400) & 0xffffff3f) | 0x00000080;
+
+  // Configure GPIOB pin 3 Speed
+   *(__IO uint32_t*)(0x58020408) |= 0x00000080;
+
+  // Force AF0 for GPIOB pin 3
+   *(__IO uint32_t*)(0x58020420) &= 0xFFFF0FFF;
+}
+int fputc(int ch, FILE *stream )
+
+{
+
+ return(ITM_SendChar(ch));
+
+}
+int _write( int file, char *ptr, int len )
+
+{
+
+int i = 0;
+
+for( i=0 ; i < len ; i++ ) ITM_SendChar(( *ptr++));
+
+return len;
+
+}
 /* USER CODE END 0 */
 
 /**
@@ -150,7 +202,9 @@ Error_Handler();
 /* USER CODE END Boot_Mode_Sequence_2 */
 
   /* USER CODE BEGIN SysInit */
+SWD_Init();
 
+ printf("Hola\n");
   /* USER CODE END SysInit */
 
   /* Initialize all configured peripherals */
@@ -188,7 +242,6 @@ Error_Handler();
   MX_FATFS_Init();
   /* USER CODE BEGIN 2 */
 
-
   if (BSP_SDRAM_SingleTest() != 0)
   {
             Error_Handler();
@@ -198,7 +251,6 @@ Error_Handler();
   if (CSP_QUADSPI_Init() == HAL_OK) {
           CSP_QSPI_EnableMemoryMappedMode();
   }
-
 
 
 
@@ -220,7 +272,7 @@ Error_Handler();
   if (HAL_TIM_PWM_Start(&htim15, TIM_CHANNEL_1) != HAL_OK)
     Error_Handler();
   /* USER CODE END 2 */
-
+  TIM15->CCR1=100;
   /* Call init function for freertos objects (in freertos.c) */
   MX_FREERTOS_Init();
 
