@@ -89,7 +89,7 @@ void MX_FREERTOS_Init(void);
 
 void SWD_Init(void)
 {
-  //*(__IO uint32_t*)(0x5C001004) |= 0x00700000; // DBGMCU_CR D3DBGCKEN D1DBGCKEN TRACECLKEN
+  *(__IO uint32_t*)(0x5C001004) |= 0x00700000; // DBGMCU_CR D3DBGCKEN D1DBGCKEN TRACECLKEN
 
   //UNLOCK FUNNEL
   *(__IO uint32_t*)(0x5C004FB0) = 0xC5ACCE55; // SWTF_LAR
@@ -149,8 +149,8 @@ int main(void)
 
   /* USER CODE END 1 */
 /* USER CODE BEGIN Boot_Mode_Sequence_0 */
-  int32_t timeout;
 /* USER CODE END Boot_Mode_Sequence_0 */
+/* Enable the CPU Cache */
 
   /* Enable I-Cache---------------------------------------------------------*/
   SCB_EnableICache();
@@ -159,15 +159,6 @@ int main(void)
   SCB_EnableDCache();
 
 /* USER CODE BEGIN Boot_Mode_Sequence_1 */
-  /* Wait until CPU2 boots and enters in stop mode or timeout*/
-#if 0
-  timeout = 0xFFFF;
-  while((__HAL_RCC_GET_FLAG(RCC_FLAG_D2CKRDY) != RESET) && (timeout-- > 0));
-  if ( timeout < 0 )
-  {
-  Error_Handler();
-  }
-#endif
 /* USER CODE END Boot_Mode_Sequence_1 */
   /* MCU Configuration--------------------------------------------------------*/
 
@@ -184,29 +175,12 @@ int main(void)
 /* Configure the peripherals common clocks */
   PeriphCommonClock_Config();
 /* USER CODE BEGIN Boot_Mode_Sequence_2 */
-/* When system initialization is finished, Cortex-M7 will release Cortex-M4 by means of
-HSEM notification */
-/*HW semaphore Clock enable*/
-__HAL_RCC_HSEM_CLK_ENABLE();
-/*Take HSEM */
-HAL_HSEM_FastTake(HSEM_ID_0);
-/*Release HSEM in order to notify the CPU2(CM4)*/
-HAL_HSEM_Release(HSEM_ID_0,0);
-/* wait until CPU2 wakes up from stop mode */
-timeout = 0xFFFF;
-while((__HAL_RCC_GET_FLAG(RCC_FLAG_D2CKRDY) == RESET) && (timeout-- > 0));
-if ( timeout < 0 )
-{
-Error_Handler();
-}
+
 /* USER CODE END Boot_Mode_Sequence_2 */
 
   /* USER CODE BEGIN SysInit */
-  SWD_Init();
 
-  printf("***********\n");
-  printf("*SWD START*\n");
-  printf("***********\n");
+
   /* USER CODE END SysInit */
 
   /* Initialize all configured peripherals */
@@ -220,7 +194,6 @@ Error_Handler();
   MX_DMA2D_Init();
   MX_FDCAN1_Init();
   MX_FDCAN2_Init();
-  //MX_SPI1_Init();
   MX_TIM1_Init();
   MX_TIM5_Init();
   MX_TIM6_Init();
@@ -242,18 +215,34 @@ Error_Handler();
   MX_ADC1_Init();
   MX_ADC3_Init();
   MX_FATFS_Init();
+
   /* USER CODE BEGIN 2 */
   RCC->AHB2ENR |= RCC_AHB2ENR_D2SRAM1EN | RCC_AHB2ENR_D2SRAM2EN | RCC_AHB2ENR_D2SRAM3EN;
+
+
+
+
+  SWD_Init();
+
+
+
+  printf("***********\n");
+  printf("*SWD START*\n");
+  printf("***********\n");
+
 
   if (BSP_SDRAM_SingleTest() != 0)
   {
             Error_Handler();
   }
 
+  printf("* SDRAM_SIngleTest() ->pass\n");
+
 
   if (CSP_QUADSPI_Init() == HAL_OK) {
           CSP_QSPI_EnableMemoryMappedMode();
   }
+  printf("* QSPI mapped mode enabled.\n");
 
 
 
@@ -261,21 +250,28 @@ Error_Handler();
 
   /* initialize LVGL framework */
   lv_init();
-
+  printf("* lv_init() finished\n");
   /* initialize display and touchscreen */
   lvgl_display_init();
+  printf("* lvgl_display_init() finished\n");
   lvgl_touchscreen_init();
+  printf("* lvgl_touchscreen_init() finished\n");
 
   /* lvgl demo */
   //lv_demo_widgets();
   //lv_demo_music();
   lv_demo_benchmark();
 
+  printf("* lv_demo_benchmark() started\n");
+
   /* pwm */
-  if (HAL_TIM_PWM_Start(&htim15, TIM_CHANNEL_1) != HAL_OK)
+  if (HAL_TIM_PWM_Start(&htim15, TIM_CHANNEL_1) != HAL_OK){
     Error_Handler();
+  }
+  TIM15->CCR1=500;
+  printf("* Backlight reduced to 500\n");
   /* USER CODE END 2 */
-  TIM15->CCR1=100;
+
   /* Call init function for freertos objects (in freertos.c) */
   MX_FREERTOS_Init();
 

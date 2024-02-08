@@ -392,8 +392,7 @@ BSP_SDRAM_Read_word( uint32_t address )
   return *( __IO uint32_t * )( SDRAM_DEVICE_ADDR + address );
 }
 
-int32_t
-BSP_SDRAM_SingleTest( void )
+int32_t BSP_SDRAM_SingleTest( void )
 {
   volatile uint32_t i;
   volatile uint32_t w=1;

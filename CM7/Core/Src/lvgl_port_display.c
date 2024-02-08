@@ -22,7 +22,7 @@ static lv_disp_drv_t disp_drv;
 static lv_disp_draw_buf_t disp_buf;
 //static __attribute__((aligned(32))) lv_color_t buf_1[MY_DISP_HOR_RES * 64];
 //static __attribute__((aligned(32)),(section ("TouchGFX_Framebuffer"))) lv_color_t buf_1[MY_DISP_HOR_RES * 64];
-static  __attribute__((aligned(32))) __attribute__( (section ("LVGLBufferSection")) ) lv_color_t buf_1[MY_DISP_HOR_RES * 64];//__attribute__( (section ("BufferSection")) )//__attribute__((aligned(32)))
+static  __attribute__((aligned(32))) /*_attribute__( (section ("LVGLBufferSection")) )*/ lv_color_t buf_1[MY_DISP_HOR_RES * 64];//__attribute__( (section ("BufferSection")) )//__attribute__((aligned(32)))
 
 /**********************
  *   GLOBAL FUNCTIONS

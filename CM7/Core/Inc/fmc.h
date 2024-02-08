@@ -34,6 +34,7 @@
 extern SDRAM_HandleTypeDef hsdram1;
 
 /* USER CODE BEGIN Private defines */
+int32_t BSP_SDRAM_SingleTest( void );
 
 /* USER CODE END Private defines */
 

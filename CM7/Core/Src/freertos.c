@@ -160,7 +160,8 @@ void StartDefaultTask(void const * argument)
   /* Infinite loop */
   for(;;)
   {
-    osDelay(1);
+    printf("%lu\n",osKernelSysTick());
+    osDelay(500);
   }
   /* USER CODE END StartDefaultTask */
 }

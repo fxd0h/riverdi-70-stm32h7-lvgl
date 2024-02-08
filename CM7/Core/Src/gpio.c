@@ -34,6 +34,7 @@
 
 /** Configure pins
      PA14 (JTCK/SWCLK)   ------> DEBUG_JTCK-SWCLK
+     PB3 (JTDO/TRACESWO)   ------> DEBUG_JTDO-SWO
      PA13 (JTMS/SWDIO)   ------> DEBUG_JTMS-SWDIO
      PI8   ------> PWR_WKUP3
      PA8   ------> RCC_MCO_1
@@ -172,10 +173,6 @@ void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
   GPIO_InitStruct.Alternate = GPIO_AF12_OTG2_FS;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
-
-  /* EXTI interrupt init*/
-  HAL_NVIC_SetPriority(EXTI3_IRQn, 7, 0);
-  HAL_NVIC_EnableIRQ(EXTI3_IRQn);
 
 }
 

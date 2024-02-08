@@ -1,1 +1,1 @@
-- poner los resources en el qspi
+- 

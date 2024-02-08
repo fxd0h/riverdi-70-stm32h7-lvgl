@@ -63,6 +63,7 @@ void MX_DSIHOST_DSI_Init(void)
   uint32_t LcdClock  = 41666;
   uint32_t laneByteClk_kHz = 62000;
   BSP_LCD_Reset(0);
+
   /* USER CODE END DSIHOST_Init 1 */
   hdsi.Instance = DSI;
   hdsi.Init.AutomaticClockLaneControl = DSI_AUTO_CLK_LANE_CTRL_DISABLE;
@@ -189,6 +190,7 @@ void MX_DSIHOST_DSI_Init(void)
   HAL_DSI_ShortWrite(&hdsi, 0, DSI_DCS_SHORT_PKT_WRITE_P0, DSI_SOFT_RESET, 0x0);
   HAL_Delay(120);
 
+
   HAL_DSI_ShortWrite(&hdsi, 0, DSI_GEN_SHORT_PKT_WRITE_P2, 0x87, 0x5A);
   HAL_DSI_ShortWrite(&hdsi, 0, DSI_GEN_SHORT_PKT_WRITE_P2, 0xB0, 0x80);
   HAL_DSI_ShortWrite(&hdsi, 0, DSI_GEN_SHORT_PKT_WRITE_P2, 0xB2, 0x50);
@@ -200,7 +202,6 @@ void MX_DSIHOST_DSI_Init(void)
   HAL_DSI_ShortWrite(&hdsi, 0, DSI_GEN_SHORT_PKT_WRITE_P2, 0x85, 0x35);
   HAL_DSI_ShortWrite(&hdsi, 0, DSI_GEN_SHORT_PKT_WRITE_P2, 0x86, 0xB0);
   HAL_Delay(50);
-
   HAL_DSI_ShortWrite(&hdsi, 0, DSI_DCS_SHORT_PKT_WRITE_P0, DSI_EXIT_SLEEP_MODE, 0x0);
   HAL_Delay(120);
 

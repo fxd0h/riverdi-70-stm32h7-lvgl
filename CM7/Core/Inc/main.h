@@ -75,8 +75,6 @@ void Error_Handler(void);
 #define FDCAN2_RX_GPIO_Port GPIOB
 #define R_CS_Pin GPIO_PIN_10
 #define R_CS_GPIO_Port GPIOG
-#define R_MISO_Pin GPIO_PIN_9
-#define R_MISO_GPIO_Port GPIOG
 #define RS232_TX_Pin GPIO_PIN_5
 #define RS232_TX_GPIO_Port GPIOD
 #define RS232_RTS_Pin GPIO_PIN_4
@@ -121,12 +119,8 @@ void Error_Handler(void);
 #define FMC_NBL0_GPIO_Port GPIOE
 #define I2C1_SDA_CTP_HAPTIC_Pin GPIO_PIN_7
 #define I2C1_SDA_CTP_HAPTIC_GPIO_Port GPIOB
-#define R_CLK_Pin GPIO_PIN_3
-#define R_CLK_GPIO_Port GPIOB
 #define RMII_TXD1_Pin GPIO_PIN_12
 #define RMII_TXD1_GPIO_Port GPIOG
-#define R_MOSI_Pin GPIO_PIN_7
-#define R_MOSI_GPIO_Port GPIOD
 #define SDMMC1_CLK_Pin GPIO_PIN_12
 #define SDMMC1_CLK_GPIO_Port GPIOC
 #define D27__IS42S32800G_DQ27_Pin GPIO_PIN_3
@@ -213,7 +207,6 @@ void Error_Handler(void);
 #define D7_GPIO_Port GPIOE
 #define CTP_INT_Pin GPIO_PIN_3
 #define CTP_INT_GPIO_Port GPIOH
-#define CTP_INT_EXTI_IRQn EXTI3_IRQn
 #define SDNWE_Pin GPIO_PIN_5
 #define SDNWE_GPIO_Port GPIOH
 #define A7_Pin GPIO_PIN_13
